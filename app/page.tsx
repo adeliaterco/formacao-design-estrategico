@@ -136,32 +136,32 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔧 CTA CORRIGIDO PARA MOBILE - SEM DUPLO CLIQUE
-  const handleCTA = useCallback((e, origem) => {
-    // Previne comportamentos padrão
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (isLoading) return; // Previne múltiplos cliques
-    
-    setIsLoading(true);
-    
-    // ✅ REDIRECIONAMENTO IMEDIATO (SEM DELAY)
-    enviarEvento('cta_click', { origem, timestamp: Date.now() });
-    
-    // Haptic feedback em mobile
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
-    
-    // ✅ REDIRECIONAMENTO DIRETO - SEM setTimeout
-    window.open('https://pay.cakto.com.br/9srbzh8_523261', '_blank');
-    
-    // Reset do loading após um tempo curto apenas para UX
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, [isLoading]);
+  // 🔥 CTA DEFINITIVO PARA MOBILE - SEM DUPLO TOQUE
+const handleCTA = useCallback((e, origem) => {
+  // Remove TODOS os preventDefault que podem causar duplo toque
+  // e.preventDefault(); // ❌ REMOVIDO
+  // e.stopPropagation(); // ❌ REMOVIDO
+  
+  if (isLoading) return;
+  
+  setIsLoading(true);
+  
+  // Tracking imediato
+  enviarEvento('cta_click', { origem, timestamp: Date.now() });
+  
+  // Haptic feedback
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
+  
+  // 🎯 REDIRECIONAMENTO DIRETO COM LOCATION
+  window.location.href = 'https://pay.cakto.com.br/9srbzh8_523261';
+  
+  // Reset apenas para UX
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 1000);
+}, [isLoading]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-x-hidden">

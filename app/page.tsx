@@ -155,7 +155,7 @@ const handleCTA = useCallback((e, origem) => {
   }
   
   // 🎯 REDIRECIONAMENTO DIRETO COM LOCATION
-  window.location.href = 'https://pay.cakto.com.br/9srbzh8_523261';
+  window.location.href = 'https://pay.cakto.com.br/qpmz3oi_299505';
   
   // Reset apenas para UX
   setTimeout(() => {

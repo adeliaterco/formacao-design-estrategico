@@ -61,35 +61,47 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [clientesVisualizando, setClientesVisualizando] = useState(127);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [vturbReady, setVturbReady] = useState(false);
   
   // Refs para lazy loading
   const [heroRef, heroInView] = useIntersectionObserver({ threshold: 0.1 });
   const [priceRef, priceInView] = useIntersectionObserver({ threshold: 0.1 });
 
-  // ✅ CONTROLE OTIMIZADO DO VÍDEO VTURB
+  // ✅ CONTROLE SIMPLIFICADO DO VÍDEO VTURB
   useEffect(() => {
-    const checkVturbLoaded = () => {
-      if (window.ConvertPlayer || document.querySelector('script[src*="converteai.net"]')) {
-        console.log('✅ Script Vturb detectado');
+    // Aguarda um tempo para o script carregar e inicializar
+    const timer = setTimeout(() => {
+      setVideoLoaded(true);
+    }, 3000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // ✅ VERIFICAÇÃO ADICIONAL PARA VTURB
+  useEffect(() => {
+    const checkVturb = () => {
+      const player = document.getElementById('vid-68cc431968f1a0ddac9f82d8');
+      if (player && (player.innerHTML.trim() !== '' || window.ConvertPlayer)) {
+        console.log('✅ Vturb carregado com sucesso');
+        setVturbReady(true);
         setVideoLoaded(true);
       }
     };
+
+    // Verifica periodicamente se o player carregou
+    const interval = setInterval(checkVturb, 1000);
     
-    // Verifica imediatamente
-    checkVturbLoaded();
-    
-    // Fallback: verifica novamente após 2s
-    const timeout = setTimeout(() => {
-      checkVturbLoaded();
-      // Se ainda não carregou, remove fallback anyway
-      if (!videoLoaded) {
-        console.log('⚠️ Forçando exibição do player');
+    // Para de verificar após 10 segundos
+    setTimeout(() => {
+      clearInterval(interval);
+      if (!vturbReady) {
+        console.log('⚠️ Timeout - removendo fallback');
         setVideoLoaded(true);
       }
-    }, 3000);
-    
-    return () => clearTimeout(timeout);
-  }, [videoLoaded]);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [vturbReady]);
 
   // Timer otimizado - só roda quando visível
   useEffect(() => {
@@ -177,24 +189,31 @@ export default function Home() {
         strategy="lazyOnload"
       />
 
-      {/* ✅ VTURB SCRIPT OTIMIZADO */}
+      {/* ✅ VTURB SCRIPT CORRIGIDO */}
       <Script
-        src="https://scripts.converteai.net/529d9a9b-9a02-4648-9d1f-be6bbe950e40/players/68cc431968f1a0ddac9f82d8/v4/player.js"
+        src="https://scripts.converteai.net/68cc4319-68f1-a0dd-ac9f-82d8/players/68cc431968f1a0ddac9f82d8/player.js"
         strategy="afterInteractive"
         onLoad={() => {
           console.log('✅ Script Vturb carregado com sucesso');
-          setTimeout(() => setVideoLoaded(true), 500);
+          setTimeout(() => {
+            setVturbReady(true);
+            setVideoLoaded(true);
+          }, 1000);
         }}
-        onError={() => {
-          console.warn('❌ Erro ao carregar script Vturb');
+        onError={(e) => {
+          console.warn('❌ Erro ao carregar script Vturb:', e);
           setVideoLoaded(true); // Remove fallback mesmo com erro
         }}
       />
 
       {/* VTURB PRELOAD OTIMIZADO */}
-      <Script dangerouslySetInnerHTML={{
-        __html: `!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);`
-      }} />
+      <Script 
+        id="vturb-preload"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);`
+        }} 
+      />
 
       {/* HERO SECTION OTIMIZADA */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center px-2 py-8">
@@ -228,14 +247,28 @@ export default function Home() {
             <strong>Método exclusivo</strong> que transformou 1.500+ mulheres em especialistas requisitadas. <strong>Mesmo começando do zero!</strong>
           </p>
 
-          {/* ✅ VÍDEO VTURB OTIMIZADO */}
+          {/* ✅ VÍDEO VTURB COMPLETAMENTE CORRIGIDO */}
           <div className="relative max-w-3xl mx-auto mb-6">
             <Card className="glass-card-mobile p-3">
               <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-800">
                 
-                {/* ✅ FALLBACK MELHORADO */}
+                {/* ✅ PLAYER VTURB - IMPLEMENTAÇÃO LIMPA */}
+                <div 
+                  id="vid-68cc431968f1a0ddac9f82d8" 
+                  className="w-full h-full rounded-xl"
+                  style={{
+                    minHeight: '300px',
+                    position: 'relative',
+                    zIndex: 10
+                  }}
+                />
+                
+                {/* ✅ FALLBACK MELHORADO - SÓ APARECE SE NECESSÁRIO */}
                 {!videoLoaded && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 z-10">
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl"
+                    style={{ zIndex: 5 }}
+                  >
                     <div className="text-center">
                       <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                       <p className="text-white font-semibold">Carregando vídeo...</p>
@@ -243,18 +276,6 @@ export default function Home() {
                     </div>
                   </div>
                 )}
-                
-                {/* ✅ PLAYER VTURB COM TRANSIÇÃO SUAVE */}
-                <div 
-                  id="vid-68cc431968f1a0ddac9f82d8" 
-                  className={`w-full h-full transition-opacity duration-500 ${
-                    videoLoaded ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  style={{
-                    position: 'relative',
-                    zIndex: 2
-                  }}
-                />
               </div>
             </Card>
           </div>

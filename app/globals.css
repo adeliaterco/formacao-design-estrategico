@@ -143,39 +143,27 @@
   }
 }
 
-/* 🔧 CORREÇÕES CRÍTICAS PARA MOBILE CTA */
+/* 📱 CORREÇÕES PARA MOBILE CTA - INTEGRADO */
 @layer components {
   .btn-primary-mobile {
-    /* FORÇA MÁXIMA PRIORIDADE */
-    pointer-events: auto !important;
-    touch-action: manipulation !important;
-    -webkit-tap-highlight-color: transparent !important;
-    user-select: none !important;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    position: relative !important;
-    z-index: 9999 !important;
-    
-    /* REMOVE CONFLITOS */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    position: relative;
+    z-index: 999;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     background: var(--gold-gradient) !important;
     color: #ffffff !important;
-    border: none !important;
-    outline: none !important;
-    
-    /* GARANTE CLICABILIDADE */
-    cursor: pointer !important;
-    
-    /* REMOVE DELAYS DE TOUCH */
-    -webkit-touch-callout: none !important;
-    
-    /* ESTILOS VISUAIS */
+    border: none;
     padding: 16px 32px;
     font-size: clamp(1rem, 3.5vw, 1.1rem);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-radius: 50px;
+    cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
     overflow: hidden;
@@ -183,14 +171,12 @@
     max-width: 380px;
     min-height: 56px;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    
-    /* FORÇA COR DO TEXTO */
-    * {
-      color: #ffffff !important;
-    }
   }
 
-  /* CORRIGE PSEUDO-ELEMENTO */
+  .btn-primary-mobile * {
+    color: #ffffff !important;
+  }
+
   .btn-primary-mobile::before {
     content: '';
     position: absolute;
@@ -200,8 +186,6 @@
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
     transition: left 0.5s;
-    pointer-events: none !important; /* CRÍTICO: Impede interceptação */
-    z-index: -1 !important; /* Coloca atrás do conteúdo */
   }
 
   .btn-primary-mobile:hover::before {
@@ -217,28 +201,21 @@
     transform: translateY(0);
   }
 
-  /* CORRIGE DISABLED STATE */
   .btn-primary-mobile:disabled {
-    pointer-events: auto !important; /* Mantém clicável para debug */
     opacity: 0.7;
-    cursor: not-allowed !important;
+    cursor: not-allowed;
     transform: none;
   }
   
   .btn-primary-mobile:focus-visible {
-    outline: 2px solid #fbbf24 !important;
+    outline: 2px solid #fbbf24;
     outline-offset: 2px;
   }
   
-  /* REMOVE PROBLEMAS DE HOVER EM MOBILE */
+  /* Previne problemas de hover em mobile */
   @media (hover: none) and (pointer: coarse) {
-    .btn-primary-mobile {
-      -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
-      tap-highlight-color: rgba(0,0,0,0) !important;
-    }
-    
     .btn-primary-mobile:hover {
-      transform: none !important;
+      transform: none;
     }
   }
 
@@ -546,9 +523,9 @@ button:hover {
   }
   
   .btn-primary-mobile {
-    padding: 14px 24px !important;
-    font-size: 0.9rem !important;
-    max-width: 100% !important;
+    padding: 14px 24px;
+    font-size: 0.9rem;
+    max-width: 100%;
   }
   
   .timer-compact {
@@ -598,41 +575,4 @@ button:hover {
   .subtitle-mobile {
     color: #f8fafc;
   }
-}
-
-/* 🔧 CORREÇÕES ADICIONAIS PARA GARANTIR FUNCIONAMENTO */
-.btn-primary-mobile,
-.btn-primary-mobile *,
-.btn-primary-mobile:before,
-.btn-primary-mobile:after {
-  -webkit-touch-callout: none !important;
-  -webkit-user-select: none !important;
-  -khtml-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-  user-select: none !important;
-}
-
-/* FORÇA RESET DE QUALQUER INTERFERÊNCIA */
-.btn-primary-mobile {
-  all: unset !important;
-  /* Depois reaplica apenas o necessário */
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: var(--gold-gradient) !important;
-  color: #ffffff !important;
-  padding: 16px 32px !important;
-  border-radius: 50px !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
-  pointer-events: auto !important;
-  position: relative !important;
-  z-index: 9999 !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  width: 100% !important;
-  max-width: 380px !important;
-  min-height: 56px !important;
-  font-size: clamp(1rem, 3.5vw, 1.1rem) !important;
 }

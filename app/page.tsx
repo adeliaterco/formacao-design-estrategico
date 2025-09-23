@@ -136,7 +136,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // CTA CORRIGIDO PARA MOBILE
+  // 🔧 CTA CORRIGIDO PARA MOBILE - SEM DUPLO CLIQUE
   const handleCTA = useCallback((e, origem) => {
     // Previne comportamentos padrão
     e.preventDefault();
@@ -146,23 +146,21 @@ export default function Home() {
     
     setIsLoading(true);
     
-    // Debounce para evitar múltiplos toques
+    // ✅ REDIRECIONAMENTO IMEDIATO (SEM DELAY)
+    enviarEvento('cta_click', { origem, timestamp: Date.now() });
+    
+    // Haptic feedback em mobile
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+    
+    // ✅ REDIRECIONAMENTO DIRETO - SEM setTimeout
+    window.open('https://pay.cakto.com.br/9srbzh8_523261', '_blank');
+    
+    // Reset do loading após um tempo curto apenas para UX
     setTimeout(() => {
-      enviarEvento('cta_click', { origem, timestamp: Date.now() });
-      
-      // Haptic feedback em mobile
-      if (navigator.vibrate) {
-        navigator.vibrate(50);
-      }
-      
-      // Redirecionamento para o link da estrutura base
-      window.open('https://pay.cakto.com.br/9srbzh8_523261', '_blank');
-      
-      // Reset do loading após um tempo curto apenas para UX
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-    }, 100);
+      setIsLoading(false);
+    }, 1000);
   }, [isLoading]);
 
   return (

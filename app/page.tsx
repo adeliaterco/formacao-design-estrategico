@@ -66,38 +66,30 @@ export default function Home() {
   const [heroRef, heroInView] = useIntersectionObserver({ threshold: 0.1 });
   const [priceRef, priceInView] = useIntersectionObserver({ threshold: 0.1 });
 
-  // Controle do carregamento do vídeo
+  // ✅ CONTROLE OTIMIZADO DO VÍDEO VTURB
   useEffect(() => {
-    // Carrega script da Vturb
-    const loadVturbScript = () => {
-      if (document.querySelector('script[src*="converteai.net"]')) {
+    const checkVturbLoaded = () => {
+      if (window.ConvertPlayer || document.querySelector('script[src*="converteai.net"]')) {
+        console.log('✅ Script Vturb detectado');
         setVideoLoaded(true);
-        return;
       }
-
-      const script = document.createElement("script");
-      script.src = "https://scripts.converteai.net/529d9a9b-9a02-4648-9d1f-be6bbe950e40/players/68cc431968f1a0ddac9f82d8/v4/player.js";
-      script.async = true;
-      
-      script.onload = () => {
-        setTimeout(() => {
-          setVideoLoaded(true);
-        }, 1500);
-      };
-      
-      script.onerror = () => {
-        console.warn('Erro ao carregar script Vturb');
-        setVideoLoaded(true); // Remove fallback mesmo com erro
-      };
-      
-      document.head.appendChild(script);
     };
-
-    // Carrega imediatamente se estiver visível
-    if (heroInView) {
-      loadVturbScript();
-    }
-  }, [heroInView]);
+    
+    // Verifica imediatamente
+    checkVturbLoaded();
+    
+    // Fallback: verifica novamente após 2s
+    const timeout = setTimeout(() => {
+      checkVturbLoaded();
+      // Se ainda não carregou, remove fallback anyway
+      if (!videoLoaded) {
+        console.log('⚠️ Forçando exibição do player');
+        setVideoLoaded(true);
+      }
+    }, 3000);
+    
+    return () => clearTimeout(timeout);
+  }, [videoLoaded]);
 
   // Timer otimizado - só roda quando visível
   useEffect(() => {
@@ -137,31 +129,27 @@ export default function Home() {
   }, []);
 
   // 🔥 CTA DEFINITIVO PARA MOBILE - SEM DUPLO TOQUE
-const handleCTA = useCallback((e, origem) => {
-  // Remove TODOS os preventDefault que podem causar duplo toque
-  // e.preventDefault(); // ❌ REMOVIDO
-  // e.stopPropagation(); // ❌ REMOVIDO
-  
-  if (isLoading) return;
-  
-  setIsLoading(true);
-  
-  // Tracking imediato
-  enviarEvento('cta_click', { origem, timestamp: Date.now() });
-  
-  // Haptic feedback
-  if (navigator.vibrate) {
-    navigator.vibrate(50);
-  }
-  
-  // 🎯 REDIRECIONAMENTO DIRETO COM LOCATION
-  window.location.href = 'https://pay.cakto.com.br/qpmz3oi_299505';
-  
-  // Reset apenas para UX
-  setTimeout(() => {
-    setIsLoading(false);
-  }, 1000);
-}, [isLoading]);
+  const handleCTA = useCallback((e, origem) => {
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    
+    // Tracking imediato
+    enviarEvento('cta_click', { origem, timestamp: Date.now() });
+    
+    // Haptic feedback
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+    
+    // 🎯 REDIRECIONAMENTO DIRETO COM LOCATION
+    window.location.href = 'https://pay.cakto.com.br/qpmz3oi_299505';
+    
+    // Reset apenas para UX
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, [isLoading]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-x-hidden">
@@ -187,6 +175,20 @@ const handleCTA = useCallback((e, origem) => {
         data-utmify-prevent-xcod-sck
         data-utmify-prevent-subids
         strategy="lazyOnload"
+      />
+
+      {/* ✅ VTURB SCRIPT OTIMIZADO */}
+      <Script
+        src="https://scripts.converteai.net/529d9a9b-9a02-4648-9d1f-be6bbe950e40/players/68cc431968f1a0ddac9f82d8/v4/player.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          console.log('✅ Script Vturb carregado com sucesso');
+          setTimeout(() => setVideoLoaded(true), 500);
+        }}
+        onError={() => {
+          console.warn('❌ Erro ao carregar script Vturb');
+          setVideoLoaded(true); // Remove fallback mesmo com erro
+        }}
       />
 
       {/* VTURB PRELOAD OTIMIZADO */}
@@ -226,36 +228,33 @@ const handleCTA = useCallback((e, origem) => {
             <strong>Método exclusivo</strong> que transformou 1.500+ mulheres em especialistas requisitadas. <strong>Mesmo começando do zero!</strong>
           </p>
 
-          {/* VÍDEO VTURB CORRIGIDO */}
+          {/* ✅ VÍDEO VTURB OTIMIZADO */}
           <div className="relative max-w-3xl mx-auto mb-6">
             <Card className="glass-card-mobile p-3">
-              <div className="relative aspect-video rounded-xl overflow-hidden">
-                <div className="video-container">
-                  {/* FALLBACK ENQUANTO CARREGA */}
-                  <div 
-                    className={`video-fallback ${videoLoaded ? 'hidden' : ''}`}
-                  >
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-800">
+                
+                {/* ✅ FALLBACK MELHORADO */}
+                {!videoLoaded && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 z-10">
                     <div className="text-center">
-                      <Play className="w-16 h-16 text-amber-400 mx-auto mb-3 animate-pulse" />
+                      <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                       <p className="text-white font-semibold">Carregando vídeo...</p>
                       <p className="text-slate-300 text-sm mt-2">Aguarde alguns segundos</p>
                     </div>
                   </div>
-                  
-                  {/* PLAYER VTURB */}
-                  <div 
-                    id="vid-68cc431968f1a0ddac9f82d8" 
-                    style={{
-                      display: 'block',
-                      margin: '0 auto',
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: '12px',
-                      position: 'relative',
-                      zIndex: 2
-                    }}
-                  />
-                </div>
+                )}
+                
+                {/* ✅ PLAYER VTURB COM TRANSIÇÃO SUAVE */}
+                <div 
+                  id="vid-68cc431968f1a0ddac9f82d8" 
+                  className={`w-full h-full transition-opacity duration-500 ${
+                    videoLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  style={{
+                    position: 'relative',
+                    zIndex: 2
+                  }}
+                />
               </div>
             </Card>
           </div>

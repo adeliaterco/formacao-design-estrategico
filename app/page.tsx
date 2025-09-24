@@ -67,70 +67,50 @@ export default function Home() {
   const [heroRef, heroInView] = useIntersectionObserver({ threshold: 0.1 });
   const [priceRef, priceInView] = useIntersectionObserver({ threshold: 0.1 });
 
-  // ✅ CONTROLE SIMPLIFICADO DO VÍDEO VTURB
+  // ✅ CONTROLE CORRIGIDO DO VÍDEO VTURB
   useEffect(() => {
-  let attempts = 0;
-  const maxAttempts = 20; // 20 segundos máximo
-  
-  const checkVturbPlayer = () => {
-    const player = document.getElementById('vid-68cc431968f1a0ddac9f82d8');
-    const hasContent = player && (
-      player.innerHTML.trim() !== '' || 
-      player.querySelector('iframe') ||
-      window.ConvertPlayer
-    );
+    let attempts = 0;
+    const maxAttempts = 20; // 20 segundos máximo
     
-    if (hasContent) {
-      console.log('✅ Vturb carregado com sucesso');
-      setVideoLoaded(true);
-      setVturbReady(true);
-      return true;
-    }
-    
-    attempts++;
-    if (attempts >= maxAttempts) {
-      console.log('⚠️ Timeout - forçando remoção do fallback');
-      setVideoLoaded(true);
-      return true;
-    }
-    
-    return false;
-  };
-  
-  const interval = setInterval(() => {
-    if (checkVturbPlayer()) {
-      clearInterval(interval);
-    }
-  }, 1000);
-  
-  return () => clearInterval(interval);
-}, []);
-
-  // ✅ VERIFICAÇÃO ADICIONAL PARA VTURB
-  useEffect(() => {
-    const checkVturb = () => {
-      const player = document.getElementById('vid-68cc431968f1a0ddac9f82d8');
-      if (player && (player.innerHTML.trim() !== '' || window.ConvertPlayer)) {
-        console.log('✅ Vturb carregado com sucesso');
+    const checkVturbPlayer = () => {
+      const player = document.querySelector('vturb-smartplayer#vid-68cc431968f1a0ddac9f82d8');
+      const hasContent = player && (
+        player.innerHTML.trim() !== '' || 
+        player.shadowRoot ||
+        player.querySelector('iframe') ||
+        player.querySelector('video') ||
+        window.ConvertPlayer
+      );
+      
+      if (hasContent) {
+        console.log('✅ Vturb SmartPlayer carregado com sucesso');
+        setVideoLoaded(true);
         setVturbReady(true);
-        setVideoLoaded(true);
+        return true;
       }
+      
+      attempts++;
+      if (attempts >= maxAttempts) {
+        console.log('⚠️ Timeout - removendo fallback após 20s');
+        setVideoLoaded(true);
+        return true;
+      }
+      
+      return false;
     };
-
-    // Verifica periodicamente se o player carregou
-    const interval = setInterval(checkVturb, 1000);
     
-    // Para de verificar após 10 segundos
-    setTimeout(() => {
-      clearInterval(interval);
-      if (!vturbReady) {
-        console.log('⚠️ Timeout - removendo fallback');
-        setVideoLoaded(true);
+    // Verifica imediatamente
+    if (checkVturbPlayer()) return;
+    
+    // Depois verifica a cada segundo
+    const interval = setInterval(() => {
+      if (checkVturbPlayer()) {
+        clearInterval(interval);
       }
-    }, 10000);
-
+    }, 1000);
+    
     return () => clearInterval(interval);
-  }, [vturbReady]);
+  }, []);
 
   // Timer otimizado - só roda quando visível
   useEffect(() => {
@@ -218,19 +198,23 @@ export default function Home() {
         strategy="lazyOnload"
       />
 
-      {/* ✅ VTURB SCRIPT CORRIGIDO */}
+      {/* ✅ VTURB SCRIPT CORRIGIDO COM CÓDIGO CORRETO */}
       <Script
-        src="https://scripts.converteai.net/68cc4319-68f1-a0dd-ac9f-82d8/players/68cc431968f1a0ddac9f82d8/player.js"
+        src="https://scripts.converteai.net/529d9a9b-9a02-4648-9d1f-be6bbe950e40/players/68cc431968f1a0ddac9f82d8/v4/player.js"
         strategy="afterInteractive"
         onLoad={() => {
-          console.log('✅ Script Vturb carregado com sucesso');
+          console.log('✅ Script Vturb V4 carregado com sucesso');
+          // Aguarda um pouco mais para o player inicializar
           setTimeout(() => {
-            setVturbReady(true);
-            setVideoLoaded(true);
-          }, 1000);
+            const player = document.querySelector('vturb-smartplayer#vid-68cc431968f1a0ddac9f82d8');
+            if (player) {
+              console.log('✅ Player encontrado após script load');
+              setVturbReady(true);
+            }
+          }, 2000);
         }}
         onError={(e) => {
-          console.warn('❌ Erro ao carregar script Vturb:', e);
+          console.warn('❌ Erro ao carregar script Vturb V4:', e);
           setVideoLoaded(true); // Remove fallback mesmo com erro
         }}
       />
@@ -281,14 +265,18 @@ export default function Home() {
             <Card className="glass-card-mobile p-3">
               <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-800">
                 
-                {/* ✅ PLAYER VTURB - IMPLEMENTAÇÃO LIMPA */}
-                <div 
-                  id="vid-68cc431968f1a0ddac9f82d8" 
-                  className="w-full h-full rounded-xl"
+                {/* ✅ PLAYER VTURB CORRETO - USANDO ELEMENTO NATIVO */}
+                <vturb-smartplayer 
+                  id="vid-68cc431968f1a0ddac9f82d8"
                   style={{
+                    display: 'block',
+                    margin: '0 auto',
+                    width: '100%',
+                    height: '100%',
                     minHeight: '300px',
+                    borderRadius: '12px',
                     position: 'relative',
-                    zIndex: 10
+                    zIndex: 20
                   }}
                 />
                 

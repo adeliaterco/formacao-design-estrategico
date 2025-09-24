@@ -146,9 +146,9 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔥 FUNÇÃO DEBUG PARA FACEBOOK PIXEL (temporária)
+  // ✅ FUNÇÃO DEBUG SEGURA (apenas logs, sem disparar eventos)
   const debugFacebookPixel = useCallback(() => {
-    console.log('�� Debug Facebook Pixel:');
+    console.log('🔍 Debug Facebook Pixel:');
     console.log('- window.fbq:', !!window.fbq);
     console.log('- window.utmify:', !!window.utmify);
     console.log('- window.pixel:', !!window.pixel);
@@ -161,24 +161,13 @@ export default function Home() {
       key.toLowerCase().includes('utm')
     );
     console.log('- Objetos relacionados ao pixel:', pixelObjects);
-    
-    // Testa disparo manual
-    if (window.fbq) {
-      window.fbq('track', 'InitiateCheckout', {
-        content_name: 'TESTE DEBUG',
-        value: 37.00,
-        currency: 'BRL'
-      });
-      console.log('✅ Teste InitiateCheckout enviado via fbq');
-    }
+    console.log('🔍 Debug concluído - nenhum evento disparado automaticamente');
   }, []);
 
-  // Debug automático (remover depois)
-  useEffect(() => {
-    setTimeout(debugFacebookPixel, 3000);
-  }, [debugFacebookPixel]);
+  // ✅ REMOVIDO: useEffect automático que causava o problema
+  // Agora o debug só roda manualmente quando necessário
 
-  // 🔥 CTA CORRIGIDO PARA FACEBOOK INITIATE CHECKOUT
+  // ✅ CTA CORRIGIDO PARA FACEBOOK INITIATE CHECKOUT
   const handleCTA = useCallback((e, origem) => {
     if (isLoading) return;
     
@@ -186,7 +175,7 @@ export default function Home() {
     
     console.log(`🎯 CTA clicado - Origem: ${origem}`);
     
-    // 🔥 FACEBOOK PIXEL - INITIATE CHECKOUT (PRINCIPAL)
+    // ✅ FACEBOOK PIXEL - INITIATE CHECKOUT (PRINCIPAL)
     if (typeof window !== 'undefined') {
       
       // Método 1: Via fbq direta (se disponível)
@@ -204,7 +193,7 @@ export default function Home() {
             button_text: e.target.innerText || 'CTA Button',
             timestamp: Date.now()
           });
-          console.log('✅ InitiateCheckout disparado via fbq');
+          console.log('✅ InitiateCheckout disparado via fbq - Origem:', origem);
         } catch (error) {
           console.warn('⚠️ Erro fbq:', error);
         }
@@ -221,7 +210,7 @@ export default function Home() {
               currency: 'BRL',
               origem: origem
             });
-            console.log('✅ InitiateCheckout disparado via utmify.track');
+            console.log('✅ InitiateCheckout disparado via utmify.track - Origem:', origem);
           }
           
           // Tenta método alternativo do UTMify
@@ -231,7 +220,7 @@ export default function Home() {
               value: 37.00,
               currency: 'BRL'
             });
-            console.log('✅ InitiateCheckout disparado via utmify.pixel.track');
+            console.log('✅ InitiateCheckout disparado via utmify.pixel.track - Origem:', origem);
           }
         } catch (error) {
           console.warn('⚠️ Erro UTMify:', error);
@@ -247,7 +236,7 @@ export default function Home() {
             currency: 'BRL',
             origem: origem
           });
-          console.log('✅ InitiateCheckout disparado via pixel.track');
+          console.log('✅ InitiateCheckout disparado via pixel.track - Origem:', origem);
         } catch (error) {
           console.warn('⚠️ Erro pixel global:', error);
         }
@@ -271,7 +260,7 @@ export default function Home() {
             origem: origem,
             timestamp: Date.now()
           });
-          console.log('✅ InitiateCheckout disparado via dataLayer');
+          console.log('✅ InitiateCheckout disparado via dataLayer - Origem:', origem);
         } catch (error) {
           console.warn('⚠️ Erro dataLayer:', error);
         }
@@ -289,7 +278,7 @@ export default function Home() {
           }
         `;
         eval(pixelCode);
-        console.log('✅ InitiateCheckout disparado via eval');
+        console.log('✅ InitiateCheckout disparado via eval - Origem:', origem);
       } catch (error) {
         console.warn('⚠️ Erro eval:', error);
       }
@@ -314,6 +303,20 @@ export default function Home() {
       setIsLoading(false);
     }, 1200);
   }, [isLoading]);
+
+  // ✅ FUNÇÃO PARA DEBUG MANUAL (use no console quando necessário)
+  const runManualDebug = useCallback(() => {
+    debugFacebookPixel();
+    console.log('🔧 Para testar InitiateCheckout manualmente, clique em um dos botões CTA');
+  }, [debugFacebookPixel]);
+
+  // ✅ Expor função de debug para uso manual no console
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.debugPixel = runManualDebug;
+      console.log('🔧 Debug disponível: digite "window.debugPixel()" no console para debug manual');
+    }
+  }, [runManualDebug]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-x-hidden">

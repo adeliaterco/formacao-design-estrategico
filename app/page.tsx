@@ -618,7 +618,7 @@ export default function Home() {
             <CardContent className="p-0">
               <div className="text-center mb-6">
                 <Image
-                  src="https://amandateixeiraoficial.com.br/wp-content/uploads/2024/11/Design-sem-nome-9.png"
+                  src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/expert-img.webp"
                   alt="Amanda Teixeira, instrutora do curso de design de sobrancelhas"
                   width={200}
                   height={300}
@@ -716,7 +716,7 @@ export default function Home() {
               <CardContent className="p-0">
                 <div className="flex items-start gap-3">
                   <Image
-                    src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/05/IMG_6297.jpg"
+                    src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/fernanda-3.webp"
                     alt="Foto de Fernanda Oliveira, aluna do curso"
                     width={50}
                     height={50}

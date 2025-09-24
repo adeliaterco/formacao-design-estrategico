@@ -643,3 +643,18 @@ button:hover {
   position: relative !important;
   z-index: 1 !important;
 }
+/* ✅ FORÇA O PLAYER VTURB A APARECER */
+#vid-68cc431968f1a0ddac9f82d8 {
+  min-height: 300px !important;
+  background: transparent !important;
+  position: relative !important;
+  z-index: 15 !important;
+}
+
+/* ✅ GARANTE QUE O IFRAME APAREÇA */
+#vid-68cc431968f1a0ddac9f82d8 iframe,
+#vid-68cc431968f1a0ddac9f82d8 > div {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}

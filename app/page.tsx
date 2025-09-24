@@ -69,13 +69,42 @@ export default function Home() {
 
   // ✅ CONTROLE SIMPLIFICADO DO VÍDEO VTURB
   useEffect(() => {
-    // Aguarda um tempo para o script carregar e inicializar
-    const timer = setTimeout(() => {
-      setVideoLoaded(true);
-    }, 3000);
+  let attempts = 0;
+  const maxAttempts = 20; // 20 segundos máximo
+  
+  const checkVturbPlayer = () => {
+    const player = document.getElementById('vid-68cc431968f1a0ddac9f82d8');
+    const hasContent = player && (
+      player.innerHTML.trim() !== '' || 
+      player.querySelector('iframe') ||
+      window.ConvertPlayer
+    );
     
-    return () => clearTimeout(timer);
-  }, []);
+    if (hasContent) {
+      console.log('✅ Vturb carregado com sucesso');
+      setVideoLoaded(true);
+      setVturbReady(true);
+      return true;
+    }
+    
+    attempts++;
+    if (attempts >= maxAttempts) {
+      console.log('⚠️ Timeout - forçando remoção do fallback');
+      setVideoLoaded(true);
+      return true;
+    }
+    
+    return false;
+  };
+  
+  const interval = setInterval(() => {
+    if (checkVturbPlayer()) {
+      clearInterval(interval);
+    }
+  }, 1000);
+  
+  return () => clearInterval(interval);
+}, []);
 
   // ✅ VERIFICAÇÃO ADICIONAL PARA VTURB
   useEffect(() => {

@@ -295,6 +295,15 @@ export default function Home() {
       <link rel="preconnect" href="https://api6.ipify.org" />
       <link rel="preconnect" href="https://comprarplanseguro.shop" />
       <link rel="preconnect" href="https://nutricaoalimentos.shop" />
+      <link rel="preconnect" href="https://amandateixeiraoficial.com.br" />
+
+      {/* ✅ PRELOAD DAS IMAGENS CRÍTICAS */}
+      <link
+        rel="preload"
+        as="image"
+        href="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/expert-img.webp"
+        type="image/webp"
+      />
 
       <Script id="facebook-pixel" strategy="lazyOnload">
         {`
@@ -742,7 +751,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SEÇÃO INSTRUTORA COMPACTA */}
+      {/* SEÇÃO INSTRUTORA COMPACTA - ✅ OTIMIZADA */}
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <Card className="glass-card-mobile p-4">
@@ -754,7 +763,9 @@ export default function Home() {
                   width={150}
                   height={225}
                   className="rounded-2xl mx-auto mb-3"
-                  loading="lazy"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <h2 className="text-xl font-bold text-white mb-2">
                   Amanda Teixeira
@@ -783,7 +794,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ✅ SEÇÃO: ANTES E DEPOIS VISUAL */}
+      {/* ✅ SEÇÃO: ANTES E DEPOIS VISUAL - OTIMIZADA */}
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title-mobile">
@@ -794,76 +805,32 @@ export default function Home() {
           </p>
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <Card className="glass-card-mobile p-1 hover:scale-105 transition-transform duration-300">
-              <Image
-                src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/744AC0AD-B13A-43F3-8ABB-B170FC0955FF-scaled.webp"
-                alt="Resultado antes e depois de sobrancelha 1"
-                width={200}
-                height={200}
-                className="rounded-lg w-full h-auto"
-                loading="lazy"
-              />
-            </Card>
-            
-            <Card className="glass-card-mobile p-1 hover:scale-105 transition-transform duration-300">
-              <Image
-                src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/1BE356B6-B9B0-4CA6-B01B-CE7B04708035-scaled.webp"
-                alt="Resultado antes e depois de sobrancelha 2"
-                width={200}
-                height={200}
-                className="rounded-lg w-full h-auto"
-                loading="lazy"
-              />
-            </Card>
-            
-            <Card className="glass-card-mobile p-1 hover:scale-105 transition-transform duration-300">
-              <Image
-                src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/5AF3165D-93B2-40EF-9E8B-C6DD855D2967-scaled.webp"
-                alt="Resultado antes e depois de sobrancelha 3"
-                width={200}
-                height={200}
-                className="rounded-lg w-full h-auto"
-                loading="lazy"
-              />
-            </Card>
-            
-            <Card className="glass-card-mobile p-1 hover:scale-105 transition-transform duration-300">
-              <Image
-                src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/5827B0FF-270B-4DE6-B93E-E5739BC7C828-scaled.webp"
-                alt="Resultado antes e depois de sobrancelha 4"
-                width={200}
-                height={200}
-                className="rounded-lg w-full h-auto"
-                loading="lazy"
-              />
-            </Card>
-            
-            <Card className="glass-card-mobile p-1 hover:scale-105 transition-transform duration-300">
-              <Image
-                src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/B4FBE6B4-78FB-41D6-BA43-7E37720C2E6C-scaled.webp"
-                alt="Resultado antes e depois de sobrancelha 5"
-                width={200}
-                height={200}
-                className="rounded-lg w-full h-auto"
-                loading="lazy"
-              />
-            </Card>
-            
-            <Card className="glass-card-mobile p-1 hover:scale-105 transition-transform duration-300">
-              <Image
-                src="https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/2DB3B625-5AA4-49A0-82AB-C76F5575FDD4-scaled.webp"
-                alt="Resultado antes e depois de sobrancelha 6"
-                width={200}
-                height={200}
-                className="rounded-lg w-full h-auto"
-                loading="lazy"
-              />
-            </Card>
+            {[
+              "744AC0AD-B13A-43F3-8ABB-B170FC0955FF-scaled.webp",
+              "1BE356B6-B9B0-4CA6-B01B-CE7B04708035-scaled.webp",
+              "5AF3165D-93B2-40EF-9E8B-C6DD855D2967-scaled.webp",
+              "5827B0FF-270B-4DE6-B93E-E5739BC7C828-scaled.webp",
+              "B4FBE6B4-78FB-41D6-BA43-7E37720C2E6C-scaled.webp",
+              "2DB3B625-5AA4-49A0-82AB-C76F5575FDD4-scaled.webp"
+            ].map((filename, index) => (
+              <Card key={filename} className="glass-card-mobile p-1 hover:scale-105 transition-transform duration-300">
+                <Image
+                  src={`https://amandateixeiraoficial.com.br/wp-content/uploads/2025/09/${filename}`}
+                  alt={`Resultado antes e depois de sobrancelha ${index + 1}`}
+                  width={200}
+                  height={200}
+                  className="rounded-lg w-full h-auto"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                />
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ✅ DEPOIMENTOS COMPACTOS MELHORADOS */}
+      {/* ✅ DEPOIMENTOS COMPACTOS MELHORADOS - OTIMIZADOS */}
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title-mobile">
@@ -881,6 +848,8 @@ export default function Home() {
                     height={40}
                     className="rounded-full border-2 border-amber-400 flex-shrink-0"
                     loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                   />
                   <div>
                     <p className="text-slate-200 text-xs mb-1">
@@ -907,6 +876,8 @@ export default function Home() {
                     height={40}
                     className="rounded-full border-2 border-amber-400 flex-shrink-0"
                     loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                   />
                   <div>
                     <p className="text-slate-200 text-xs mb-1">
@@ -933,6 +904,8 @@ export default function Home() {
                     height={40}
                     className="rounded-full border-2 border-amber-400 flex-shrink-0"
                     loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                   />
                   <div>
                     <p className="text-slate-200 text-xs mb-1">
@@ -959,6 +932,8 @@ export default function Home() {
                     height={40}
                     className="rounded-full border-2 border-amber-400 flex-shrink-0"
                     loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                   />
                   <div>
                     <p className="text-slate-200 text-xs mb-1">

@@ -182,7 +182,7 @@ export default function Home() {
 
       <Script id="facebook-pixel" strategy="lazyOnload">
         {`
-          window.pixelId = "689b7d76a6b30cd48709aaec";
+          window.pixelId = "68d352fa2bbdabf114779dac";
           var a = document.createElement("script");
           a.setAttribute("async", "");
           a.setAttribute("defer", "");

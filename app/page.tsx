@@ -9,7 +9,7 @@ import { ArrowRight, Clock, Users, DollarSign, Star, CheckCircle, Shield, Play, 
 import Script from "next/script"
 import Image from "next/image"
 
-// GA otimizado com debounce
+// GA otimizado com debounce (mantido)
 const enviarEvento = (() => {
   let queue = [];
   let timeout;
@@ -29,13 +29,12 @@ const enviarEvento = (() => {
   };
 })();
 
-// Hook para Intersection Observer com fallback
+// Hook para Intersection Observer com fallback (mantido)
 const useIntersectionObserver = (options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
-    // Fallback para browsers antigos
     if (!window.IntersectionObserver) {
       setIsIntersecting(true);
       return;
@@ -67,10 +66,10 @@ export default function Home() {
   const [heroRef, heroInView] = useIntersectionObserver({ threshold: 0.1 });
   const [priceRef, priceInView] = useIntersectionObserver({ threshold: 0.1 });
 
-  // ✅ CONTROLE CORRIGIDO DO VÍDEO VTURB
+  // ✅ CONTROLE CORRIGIDO DO VÍDEO VTURB (mantido)
   useEffect(() => {
     let attempts = 0;
-    const maxAttempts = 20; // 20 segundos máximo
+    const maxAttempts = 20;
     
     const checkVturbPlayer = () => {
       const player = document.querySelector('vturb-smartplayer#vid-68cc431968f1a0ddac9f82d8');
@@ -99,10 +98,8 @@ export default function Home() {
       return false;
     };
     
-    // Verifica imediatamente
     if (checkVturbPlayer()) return;
     
-    // Depois verifica a cada segundo
     const interval = setInterval(() => {
       if (checkVturbPlayer()) {
         clearInterval(interval);
@@ -112,7 +109,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Timer otimizado - só roda quando visível
+  // Timer otimizado (mantido)
   useEffect(() => {
     if (!heroInView) return;
 
@@ -132,7 +129,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [heroInView]);
 
-  // Simulação de atividade em tempo real
+  // Simulação de atividade em tempo real (mantido)
   useEffect(() => {
     const interval = setInterval(() => {
       setVagasRestantes(prev => {
@@ -149,13 +146,156 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔥 CTA DEFINITIVO PARA MOBILE - SEM DUPLO TOQUE
+  // 🔥 FUNÇÃO DEBUG PARA FACEBOOK PIXEL (temporária)
+  const debugFacebookPixel = useCallback(() => {
+    console.log('�� Debug Facebook Pixel:');
+    console.log('- window.fbq:', !!window.fbq);
+    console.log('- window.utmify:', !!window.utmify);
+    console.log('- window.pixel:', !!window.pixel);
+    console.log('- pixelId configurado:', window.pixelId);
+    
+    // Lista todos os objetos relacionados ao pixel
+    const pixelObjects = Object.keys(window).filter(key => 
+      key.toLowerCase().includes('pixel') || 
+      key.toLowerCase().includes('fb') ||
+      key.toLowerCase().includes('utm')
+    );
+    console.log('- Objetos relacionados ao pixel:', pixelObjects);
+    
+    // Testa disparo manual
+    if (window.fbq) {
+      window.fbq('track', 'InitiateCheckout', {
+        content_name: 'TESTE DEBUG',
+        value: 37.00,
+        currency: 'BRL'
+      });
+      console.log('✅ Teste InitiateCheckout enviado via fbq');
+    }
+  }, []);
+
+  // Debug automático (remover depois)
+  useEffect(() => {
+    setTimeout(debugFacebookPixel, 3000);
+  }, [debugFacebookPixel]);
+
+  // 🔥 CTA CORRIGIDO PARA FACEBOOK INITIATE CHECKOUT
   const handleCTA = useCallback((e, origem) => {
     if (isLoading) return;
     
     setIsLoading(true);
     
-    // Tracking imediato
+    console.log(`🎯 CTA clicado - Origem: ${origem}`);
+    
+    // 🔥 FACEBOOK PIXEL - INITIATE CHECKOUT (PRINCIPAL)
+    if (typeof window !== 'undefined') {
+      
+      // Método 1: Via fbq direta (se disponível)
+      if (window.fbq) {
+        try {
+          window.fbq('track', 'InitiateCheckout', {
+            content_name: 'Formação Design de Sobrancelhas',
+            content_category: 'Curso Online',
+            content_ids: ['formacao-design-sobrancelhas'],
+            value: 37.00,
+            currency: 'BRL',
+            num_items: 1,
+            // Dados extras para análise
+            origem: origem,
+            button_text: e.target.innerText || 'CTA Button',
+            timestamp: Date.now()
+          });
+          console.log('✅ InitiateCheckout disparado via fbq');
+        } catch (error) {
+          console.warn('⚠️ Erro fbq:', error);
+        }
+      }
+      
+      // Método 2: Via UTMify (seu pixel principal)
+      if (window.utmify) {
+        try {
+          if (window.utmify.track) {
+            window.utmify.track('InitiateCheckout', {
+              content_name: 'Formação Design de Sobrancelhas',
+              content_category: 'Curso Online',
+              value: 37.00,
+              currency: 'BRL',
+              origem: origem
+            });
+            console.log('✅ InitiateCheckout disparado via utmify.track');
+          }
+          
+          // Tenta método alternativo do UTMify
+          if (window.utmify.pixel && window.utmify.pixel.track) {
+            window.utmify.pixel.track('InitiateCheckout', {
+              content_name: 'Formação Design de Sobrancelhas',
+              value: 37.00,
+              currency: 'BRL'
+            });
+            console.log('✅ InitiateCheckout disparado via utmify.pixel.track');
+          }
+        } catch (error) {
+          console.warn('⚠️ Erro UTMify:', error);
+        }
+      }
+      
+      // Método 3: Via objeto pixel global (backup)
+      if (window.pixel && window.pixel.track) {
+        try {
+          window.pixel.track('InitiateCheckout', {
+            content_name: 'Formação Design de Sobrancelhas',
+            value: 37.00,
+            currency: 'BRL',
+            origem: origem
+          });
+          console.log('✅ InitiateCheckout disparado via pixel.track');
+        } catch (error) {
+          console.warn('⚠️ Erro pixel global:', error);
+        }
+      }
+      
+      // Método 4: Via dataLayer (para GTM/Facebook)
+      if (window.dataLayer) {
+        try {
+          window.dataLayer.push({
+            event: 'facebook_initiate_checkout',
+            ecommerce: {
+              currency: 'BRL',
+              value: 37.00,
+              items: [{
+                item_name: 'Formação Design de Sobrancelhas',
+                item_category: 'Curso Online',
+                price: 37.00,
+                quantity: 1
+              }]
+            },
+            origem: origem,
+            timestamp: Date.now()
+          });
+          console.log('✅ InitiateCheckout disparado via dataLayer');
+        } catch (error) {
+          console.warn('⚠️ Erro dataLayer:', error);
+        }
+      }
+      
+      // Método 5: Disparo manual via eval (último recurso)
+      try {
+        const pixelCode = `
+          if (typeof fbq !== 'undefined') {
+            fbq('track', 'InitiateCheckout', {
+              content_name: 'Formação Design de Sobrancelhas',
+              value: 37.00,
+              currency: 'BRL'
+            });
+          }
+        `;
+        eval(pixelCode);
+        console.log('✅ InitiateCheckout disparado via eval');
+      } catch (error) {
+        console.warn('⚠️ Erro eval:', error);
+      }
+    }
+    
+    // Tracking genérico (manter o seu)
     enviarEvento('cta_click', { origem, timestamp: Date.now() });
     
     // Haptic feedback
@@ -163,13 +303,16 @@ export default function Home() {
       navigator.vibrate(50);
     }
     
-    // 🎯 REDIRECIONAMENTO DIRETO COM LOCATION
-    window.location.href = 'https://pay.cakto.com.br/qpmz3oi_299505';
+    // 🎯 REDIRECIONAMENTO COM DELAY PARA GARANTIR TRACKING
+    setTimeout(() => {
+      console.log('🚀 Redirecionando para checkout...');
+      window.location.href = 'https://pay.cakto.com.br/qpmz3oi_299505';
+    }, 800); // 800ms para garantir que todos os eventos sejam enviados
     
-    // Reset apenas para UX
+    // Reset para UX
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 1200);
   }, [isLoading]);
 
   return (
@@ -204,7 +347,6 @@ export default function Home() {
         strategy="afterInteractive"
         onLoad={() => {
           console.log('✅ Script Vturb V4 carregado com sucesso');
-          // Aguarda um pouco mais para o player inicializar
           setTimeout(() => {
             const player = document.querySelector('vturb-smartplayer#vid-68cc431968f1a0ddac9f82d8');
             if (player) {
@@ -215,7 +357,7 @@ export default function Home() {
         }}
         onError={(e) => {
           console.warn('❌ Erro ao carregar script Vturb V4:', e);
-          setVideoLoaded(true); // Remove fallback mesmo com erro
+          setVideoLoaded(true);
         }}
       />
 
@@ -265,7 +407,6 @@ export default function Home() {
             <Card className="glass-card-mobile p-3">
               <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-800">
                 
-                {/* ✅ PLAYER VTURB CORRETO - USANDO ELEMENTO NATIVO */}
                 <vturb-smartplayer 
                   id="vid-68cc431968f1a0ddac9f82d8"
                   style={{
@@ -280,7 +421,6 @@ export default function Home() {
                   }}
                 />
                 
-                {/* ✅ FALLBACK MELHORADO - SÓ APARECE SE NECESSÁRIO */}
                 {!videoLoaded && (
                   <div 
                     className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl"

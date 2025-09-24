@@ -10,9 +10,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Manual do Drink Caseiro - Faça Drinks Profissionais em Casa",
+  title: "Design Estrategico",
   description:
-    "Aprenda a fazer os 50 drinks mais pedidos dos bares caros em casa por apenas R$ 3. Economize milhares de reais por ano!",
+    "FDE",
   generator: "v0.dev",
 }
 

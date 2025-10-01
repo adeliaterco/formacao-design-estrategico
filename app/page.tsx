@@ -74,7 +74,7 @@ export default function Home() {
     const maxAttempts = 20;
     
     const checkVturbPlayer = () => {
-      const player = document.querySelector('vturb-smartplayer#vid-68cc431968f1a0ddac9f82d8');
+      const player = document.querySelector('vturb-smartplayer#vid-68dd95c8ce36f0105aec8719');
       const hasContent = player && (
         player.innerHTML.trim() !== '' || 
         player.shadowRoot ||
@@ -324,12 +324,12 @@ export default function Home() {
       />
 
       <Script
-        src="https://scripts.converteai.net/529d9a9b-9a02-4648-9d1f-be6bbe950e40/players/68cc431968f1a0ddac9f82d8/v4/player.js"
+        src="https://scripts.converteai.net/82f5110e-2a80-4e42-8099-3ddebe9eedab/players/68dd95c8ce36f0105aec8719/v4/player.js"
         strategy="afterInteractive"
         onLoad={() => {
           console.log('✅ Script Vturb V4 carregado com sucesso');
           setTimeout(() => {
-            const player = document.querySelector('vturb-smartplayer#vid-68cc431968f1a0ddac9f82d8');
+            const player = document.querySelector('vturb-smartplayer#vid-68dd95c8ce36f0105aec8719');
             if (player) {
               console.log('✅ Player encontrado após script load');
               setVturbReady(true);
@@ -409,7 +409,7 @@ export default function Home() {
               <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-800">
                 
                 <vturb-smartplayer 
-                  id="vid-68cc431968f1a0ddac9f82d8"
+                  id="vid-68dd95c8ce36f0105aec8719"
                   style={{
                     display: 'block',
                     margin: '0 auto',
